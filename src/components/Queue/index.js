@@ -1,0 +1,69 @@
+import React, { useEffect, useState } from 'react'
+
+import ElementBox from '../ElementBox'
+
+import { getSelections1DFormated } from '../../common/selections'
+import { defaultElementOptions } from '../../common/defaultValues'
+
+import styles from './style.css'
+
+const Queue = ({
+  className = '',
+  queue,
+  elementsToShow = 1,
+  showBack = false,
+  elementOptions,
+  select = null
+}) => {
+  const [elements, setElements] = useState([])
+
+  useEffect(() => {
+    const options = { ...defaultElementOptions, ...(elementOptions || {}) }
+    const selections = select !== null ? getSelections1DFormated(select) : []
+
+    const components = []
+    const to = Math.min(queue.length, 0 + elementsToShow)
+
+    const createElement = (index, value, indexTop) => {
+      let className = options.className || ''
+      let style = options.style || {}
+
+      selections.forEach((s) => {
+        if (s.callback(index, value)) {
+          className = `${className} ${s.className}`
+          style = { ...style, ...s.style }
+        }
+      })
+      return (
+        <ElementBox
+          onClick={(event) => options.onClick(index, value, event)}
+          showIndexTop={indexTop || false}
+          indexTop={indexTop}
+          key={index}
+          className={className}
+          style={style}
+          data={value}
+        />
+      )
+    }
+
+    components.push(createElement(0, queue[0], 'Front'))
+    for (let index = 1; index < to; index++)
+      components.push(createElement(index, queue[index], ' '))
+    if (showBack && to !== queue.length) {
+      components.push(<div key={-1} className={`${styles.queueDot}`} />)
+      components.push(<div key={-2} className={`${styles.queueDot}`} />)
+      components.push(<div key={-3} className={`${styles.queueDot}`} />)
+      components.push(
+        createElement(queue.length - 1, queue[queue.length - 1], 'Back')
+      )
+    }
+
+    setElements(components)
+  }, [queue, elementsToShow, elementOptions, select, showBack])
+  return (
+    <div className={`${styles.queueStructure} ${className}`}>{elements}</div>
+  )
+}
+
+export default Queue

@@ -1,0 +1,33 @@
+.keyValueElement {
+  --element-color: #b9b4b0;
+  box-sizing: border-box;
+  border-radius: 2px;
+  border: 1.8px solid var(--element-color);
+  padding: 0;
+  margin: 2px 2px;
+  min-height: 50px;
+  min-width: 50px;
+  position: relative;
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--element-color);
+}
+
+.keyValueElementValue {
+  display: block;
+  font-size: 1em;
+  padding: 10px 10px;
+  border-bottom: 1.8px solid var(--element-color);
+}
+
+.keyValueElementKey {
+  display: block;
+  color: #f5d67b;
+  font-size: 0.7em;
+  padding: 3px 10px;
+}
+.defaultSelection {
+  background-color: rgb(63, 63, 63);
+}

@@ -1,0 +1,13 @@
+.stackStructure {
+  display: flex;
+  align-items: center;
+}
+
+.stackDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50px;
+  background-color: white;
+  margin: 0 7px;
+  margin-top: 20px;
+}

@@ -280,7 +280,7 @@ const Tree = ({
 
   return (
     <div
-      className={`${syles.treeStructureContainer} ${className}`}
+      className={`${styles.treeStructureContainer} ${className}`}
       style={{ width: width, height: state.dimensions.height }}
     >
       <svg ref={ref} width={width} height={state.dimensions.height}>

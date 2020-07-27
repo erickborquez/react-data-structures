@@ -9,14 +9,14 @@ import styles from './style.css'
 
 const MapStructure = ({
   className = '',
-  map,
+  elements,
   elementOptions = null,
   select = null
 }) => {
-  const [elements, setElements] = useState([])
+  const [components, setComponents] = useState([])
 
   useEffect(() => {
-    let mapCopy = map || []
+    let elementsCopy = elements || []
     const options = { ...defaultElementOptions, ...(elementOptions || {}) }
     const selections = select !== null ? getSelectionsKeyValue(select) : []
     const createElement = (data, i) => {
@@ -39,10 +39,12 @@ const MapStructure = ({
         />
       )
     }
-    setElements(mapCopy.map(createElement))
-  }, [map, elementOptions, select])
+    setComponents(elementsCopy.map(createElement))
+  }, [elements, elementOptions, select])
 
-  return <div className={`${styles.mapStructure} ${className}`}>{elements}</div>
+  return (
+    <div className={`${styles.mapStructure} ${className}`}>{components}</div>
+  )
 }
 
 export default MapStructure

@@ -6,17 +6,22 @@ import { defaultElementOptions } from '../../common/defaultValues'
 import styles from './style.css'
 import ElementBox from '../ElementBox'
 
-const Array1D = ({ className = '', select = null, array, elementOptions }) => {
-  const [elements, setElements] = useState([])
+const Array1D = ({
+  className = '',
+  select = null,
+  elements = null,
+  elementOptions
+}) => {
+  const [components, setComponents] = useState([])
 
   useEffect(() => {
-    const arrayCopy = array || []
+    const elementsCopy = elements || []
     const options = { ...defaultElementOptions, ...(elementOptions || {}) }
 
     /// An array describing the selections
     const selections = select !== null ? getSelections1DFormated(select) : []
 
-    const components = arrayCopy.map((element, index) => {
+    const components = elementsCopy.map((element, index) => {
       let className = options.className || ''
       let style = options.style || {}
       selections.forEach((s) => {
@@ -38,11 +43,13 @@ const Array1D = ({ className = '', select = null, array, elementOptions }) => {
         />
       )
     })
-    setElements(components)
-  }, [select, array, elementOptions])
+    setComponents(components)
+  }, [select, elements, elementOptions])
 
   return (
-    <div className={`${styles.array1dContainer} ${className}`}>{elements}</div>
+    <div className={`${styles.array1dContainer} ${className}`}>
+      {components}
+    </div>
   )
 }
 

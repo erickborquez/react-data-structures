@@ -12,23 +12,23 @@ import styles from './style.css'
 const Array2D = ({
   className = '',
   select = null,
-  array2D,
+  elements = null,
   elementOptions = null
 }) => {
-  const [elements, setElement] = useState([[]])
+  const [components, setComponents] = useState([[]])
 
   useEffect(() => {
+    if (!elements) return
     const selections = select ? getSelections2DFormated(select) : []
-    console.log(selections)
     const options = { ...defaultElementOptions, ...(elementOptions || {}) }
-    const maxElements = array2D.reduce(
+    const maxElements = elements.reduce(
       (acc, array) => Math.max(acc, array.length),
       0
     )
-    const array2DFormated = array2D.map((arr) =>
-      resizeArray(arr, maxElements, '😎')
+    const elementsFormated = elements.map((arr) =>
+      resizeArray(arr, maxElements, '')
     )
-    const components = array2DFormated.map((arr, i) =>
+    const components = elementsFormated.map((arr, i) =>
       arr.map((value, j) => {
         let className = options.className || ''
         let style = options.style || {}
@@ -53,18 +53,18 @@ const Array2D = ({
         )
       })
     )
-    setElement(components)
-  }, [array2D, elementOptions, select])
+    setComponents(components)
+  }, [elements, elementOptions, select])
 
   return (
     <div
       className={`${styles.array2dContainer} ${className}`}
       style={{
-        gridTemplateColumns: `repeat(${elements[0].length},min-content)`,
-        gridTemplateRows: `repeat(${elements.length},min-content)`
+        gridTemplateColumns: `repeat(${components[0].length},min-content)`,
+        gridTemplateRows: `repeat(${components.length},min-content)`
       }}
     >
-      {elements}
+      {components}
     </div>
   )
 }

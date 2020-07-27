@@ -9,20 +9,21 @@ import styles from './style.css'
 
 const Stack = ({
   className = '',
-  stack,
-  elementsToShow = 1,
+  elements,
+  elementsToShow = 5,
   showRear = false,
   elementOptions,
   select = null
 }) => {
-  const [elements, setElements] = useState([])
+  const [components, setComponents] = useState([])
 
   useEffect(() => {
+    if (!elements) return
     const options = { ...defaultElementOptions, ...(elementOptions || {}) }
     const selections = select !== null ? getSelections1DFormated(select) : []
 
     const components = []
-    const from = Math.max(0, stack.length - elementsToShow)
+    const from = Math.max(0, elements.length - elementsToShow)
 
     const createElement = (index, value, indexTop) => {
       let className = options.className || ''
@@ -48,22 +49,22 @@ const Stack = ({
     }
 
     if (showRear && from !== 0) {
-      components.push(createElement(0, stack[0], 'Rear'))
+      components.push(createElement(0, elements[0], 'Rear'))
       components.push(<div key={-1} className={`${styles.stackDot}`} />)
       components.push(<div key={-2} className={`${styles.stackDot}`} />)
       components.push(<div key={-3} className={`${styles.stackDot}`} />)
     }
-    for (let index = from; index < stack.length - 1; index++)
-      components.push(createElement(index, stack[index], ' '))
+    for (let index = from; index < elements.length - 1; index++)
+      components.push(createElement(index, elements[index], ' '))
     components.push(
-      createElement(stack.length - 1, stack[stack.length - 1], 'Top')
+      createElement(elements.length - 1, elements[elements.length - 1], 'Top')
     )
 
-    setElements(components)
-  }, [stack, elementsToShow, elementOptions, select, showRear])
+    setComponents(components)
+  }, [elements, elementsToShow, elementOptions, select, showRear])
 
   return (
-    <div className={`${styles.stackStructure} ${className}`}>{elements}</div>
+    <div className={`${styles.stackStructure} ${className}`}>{components}</div>
   )
 }
 

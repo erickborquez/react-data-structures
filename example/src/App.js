@@ -8,6 +8,7 @@ import {
   Stack,
   Tree
 } from 'react-data-structures'
+
 import 'react-data-structures/dist/index.css'
 
 let count = 0
@@ -41,7 +42,7 @@ const App = () => {
         />
       </div>
       <div className='container'>
-        <Array1D elements={[1, 2, 3, 4]} />
+        <Array1D elements={[1, 2, 3, 4, 4, 5, 6]} />
       </div>
       <div className='container'>
         <Array2D

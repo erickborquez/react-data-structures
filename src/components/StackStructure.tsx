@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
-import ElementBox from '../ElementBox'
+import ElementBox from './ElementBox'
 
-import { getSelections1DFormated } from '../../common/selections'
-import { defaultElementOptions } from '../../common/defaultValues'
+import { getSelections1DFormated } from '../common/selections'
+import { defaultElementOptions } from '../common/defaultValues'
 
-import styles from './style.css'
+import styles from './../styles/stackStructure.module.css'
 
-const Queue = ({
+const Stack = ({
   className = '',
   elements,
   elementsToShow = 5,
-  showBack = false,
+  showRear = false,
   elementOptions,
   select = null
 }) => {
@@ -23,7 +23,7 @@ const Queue = ({
     const selections = select !== null ? getSelections1DFormated(select) : []
 
     const components = []
-    const to = Math.min(elements.length, elementsToShow)
+    const from = Math.max(0, elements.length - elementsToShow)
 
     const createElement = (index, value, indexTop) => {
       let className = options.className || ''
@@ -48,27 +48,24 @@ const Queue = ({
       )
     }
 
-    components.push(createElement(0, elements[0], 'Front'))
-    for (let index = 1; index < to; index++)
-      components.push(createElement(index, elements[index], ' '))
-    if (showBack && to !== elements.length) {
-      components.push(<div key={-1} className={`${styles.queueDot}`} />)
-      components.push(<div key={-2} className={`${styles.queueDot}`} />)
-      components.push(<div key={-3} className={`${styles.queueDot}`} />)
-      components.push(
-        createElement(
-          elements.length - 1,
-          elements[elements.length - 1],
-          'Back'
-        )
-      )
+    if (showRear && from !== 0) {
+      components.push(createElement(0, elements[0], 'Rear'))
+      components.push(<div key={-1} className={`${styles.stackDot}`} />)
+      components.push(<div key={-2} className={`${styles.stackDot}`} />)
+      components.push(<div key={-3} className={`${styles.stackDot}`} />)
     }
+    for (let index = from; index < elements.length - 1; index++)
+      components.push(createElement(index, elements[index], ' '))
+    components.push(
+      createElement(elements.length - 1, elements[elements.length - 1], 'Top')
+    )
 
     setComponents(components)
-  }, [elements, elementsToShow, elementOptions, select, showBack])
+  }, [elements, elementsToShow, elementOptions, select, showRear])
+
   return (
-    <div className={`${styles.queueStructure} ${className}`}>{components}</div>
+    <div className={`${styles.stackStructure} ${className}`}>{components}</div>
   )
 }
 
-export default Queue
+export default Stack

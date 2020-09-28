@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-import ElementBox from '../ElementBox'
+import ElementBox from './ElementBox'
 
-import { defaultElementOptions } from '../../common/defaultValues'
-import { getSelections2DFormated } from '../../common/selections'
+import { defaultElementOptions } from '../common/defaultValues'
+import { getSelections2DFormated } from '../common/selections'
 
-import { resizeArray } from '../../common/utilities'
+import { resizeArray } from '../common/utilities'
 
-import styles from './style.css'
+import styles from '../styles/array2d.module.css'
 
 const Array2D = ({
   className = '',

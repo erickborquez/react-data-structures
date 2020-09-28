@@ -1,12 +1,12 @@
 // import * as d3 from 'd3'
 
-import Array1D from './components/Array1D'
+import Array1D from './components/Array1d'
 import Array2D from './components/Array2D'
 import ElementBox from './components/ElementBox'
 import KeyValueElement from './components/KeyValueElement'
 import MapStructure from './components/MapStructure'
 import Queue from './components/Queue'
-import Stack from './components/Stack'
+import Stack from './components/StackStructure'
 import Tree from './components/Tree'
 
 // import styles from './styles.module.css'
@@ -21,6 +21,8 @@ export {
   Stack,
   Tree
 }
+
+// export { const erick: Number = 23}
 
 // export const ExampleComponent = ({ text }) => {
 //   // console.log(d3)

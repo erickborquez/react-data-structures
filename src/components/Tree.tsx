@@ -5,10 +5,10 @@ import * as d3 from 'd3'
 import {
   getVertexSelectionFormated,
   getEdgeSelectionFormated
-} from '../../common/selections'
-import { defaultElementOptions } from '../../common/defaultValues'
+} from '../common/selections'
+import { defaultElementOptions } from '../common/defaultValues'
 
-import styles from './style.css'
+import styles from '../styles/tree.module.css'
 
 const Tree = ({
   className = '',
@@ -21,7 +21,7 @@ const Tree = ({
   width = 0,
   height = 0,
   nodes,
-  onZoom = () => null,
+  onZoom = (curr: any) => null,
   root
 }) => {
   const [state, setState] = useState({

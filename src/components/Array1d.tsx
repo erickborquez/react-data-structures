@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
-import { getSelections1DFormated } from '../../common/selections'
-import { defaultElementOptions } from '../../common/defaultValues'
+import { getSelections1DFormated } from '../common/selections'
+import { defaultElementOptions } from '../common/defaultValues'
 
-import styles from './style.css'
-import ElementBox from '../ElementBox'
+import ElementBox from './ElementBox'
+
+import styles from '../styles/array1d.module.css'
 
 const Array1D = ({
   className = '',

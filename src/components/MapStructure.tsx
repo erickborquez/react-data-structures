@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import KeyValueElement from '../KeyValueElement'
+import KeyValueElement from './KeyValueElement'
 
-import { getSelectionsKeyValue } from '../../common/selections'
-import { defaultElementOptions } from '../../common/defaultValues'
+import { getSelectionsKeyValue } from '../common/selections'
+import { defaultElementOptions } from '../common/defaultValues'
 
-import styles from './style.css'
+import styles from '../styles/mapStructure.module.css'
 
 const MapStructure = ({
   className = '',
@@ -31,8 +31,8 @@ const MapStructure = ({
       })
       return (
         <KeyValueElement
-          onClick={(event) => options.onClick(key, value, event)}
-          key={`${i}-${key}-${value}`}
+          // onClick={(event) => options.onClick(key, value, event)}
+          // key={`${i}-${key}-${value}`}
           className={className}
           style={style}
           data={data}

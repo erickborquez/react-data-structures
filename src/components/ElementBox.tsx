@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from './styles.css'
+import styles from '../styles/elementBox.module.css'
 
 const ElementBox = ({
   className = '',

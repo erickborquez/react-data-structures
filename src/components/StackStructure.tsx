@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import * as React from 'react'
 
 import ElementBox from './ElementBox'
 
 import { getSelections1DFormated } from '../common/selections'
-import { defaultElementOptions } from '../common/defaultValues'
+import { defaultArrayOptions } from '../common/defaultValues'
 
 import styles from './../styles/stackStructure.module.css'
 
@@ -15,11 +15,11 @@ const Stack = ({
   elementOptions,
   select = null
 }) => {
-  const [components, setComponents] = useState([])
+  const [components, setComponents] = React.useState([])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!elements) return
-    const options = { ...defaultElementOptions, ...(elementOptions || {}) }
+    const options = { ...defaultArrayOptions, ...(elementOptions || {}) }
     const selections = select !== null ? getSelections1DFormated(select) : []
 
     const components = []
@@ -37,13 +37,12 @@ const Stack = ({
       })
       return (
         <ElementBox
-          onClick={(event) => options.onClick(index, value, event)}
-          showIndexTop={indexTop || false}
-          indexTop={indexTop}
+          showIndex={indexTop || false}
+          index={indexTop}
           key={index}
           className={className}
           style={style}
-          data={value}
+          value={value}
         />
       )
     }

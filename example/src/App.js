@@ -31,7 +31,7 @@ const App = () => {
 
   return (
     <main className='main'>
-      <div className='container'>
+      {/* <div className='container'>
         <Tree
           nodes={tree}
           root='root'
@@ -40,9 +40,12 @@ const App = () => {
           orientation='vertical'
           reversed={false}
         />
-      </div>
+      </div> */}
       <div className='container'>
-        <Array1D elements={[1, 2, 3, 4, 4, 5, 6]} />
+        <Array1D
+          elements={[1, 2, 3, 4, 4, 5, { value: 10, style: { color: 'blue' } }]}
+          options={{ element: { style: { color: 'red' } } }}
+        />
       </div>
       <div className='container'>
         <Array2D
@@ -52,6 +55,7 @@ const App = () => {
           ]}
         />
       </div>
+      {/*
       <div className='container'>
         <MapStructure
           elements={[
@@ -67,7 +71,8 @@ const App = () => {
       </div>
       <div className='container'>
         <Stack elements={[1, 2, 3, 4, 5]} showRear elementsToShow={4} />
-      </div>
+      </div>{' '}
+      */}
     </main>
   )
 }

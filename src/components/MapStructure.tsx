@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import * as React from 'react'
 
 import KeyValueElement from './KeyValueElement'
 
 import { getSelectionsKeyValue } from '../common/selections'
-import { defaultElementOptions } from '../common/defaultValues'
+import { defaultArrayOptions } from '../common/defaultValues'
 
 import styles from '../styles/mapStructure.module.css'
 
@@ -13,11 +13,11 @@ const MapStructure = ({
   elementOptions = null,
   select = null
 }) => {
-  const [components, setComponents] = useState([])
+  const [components, setComponents] = React.useState([])
 
-  useEffect(() => {
+  React.useEffect(() => {
     let elementsCopy = elements || []
-    const options = { ...defaultElementOptions, ...(elementOptions || {}) }
+    const options = { ...defaultArrayOptions, ...(elementOptions || {}) }
     const selections = select !== null ? getSelectionsKeyValue(select) : []
     const createElement = (data, i) => {
       const { key, value } = data

@@ -1,6 +1,6 @@
 // import * as d3 from 'd3'
 
-import Array1D from './components/Array1d'
+import Array1D from './components/Array1D'
 import Array2D from './components/Array2D'
 import ElementBox from './components/ElementBox'
 import KeyValueElement from './components/KeyValueElement'
@@ -25,6 +25,5 @@ export {
 // export { const erick: Number = 23}
 
 // export const ExampleComponent = ({ text }) => {
-//   // console.log(d3)
 //   return <div className={styles.test}>Example Compossnent: {text}</div>
 // }

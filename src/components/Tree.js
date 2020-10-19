@@ -6,7 +6,7 @@ import {
   getVertexSelectionFormated,
   getEdgeSelectionFormated
 } from '../common/selections'
-import { defaultElementOptions } from '../common/defaultValues'
+import { arrayOptions } from '../common/defaultValues'
 
 import styles from '../styles/tree.module.css'
 
@@ -21,7 +21,7 @@ const Tree = ({
   width = 0,
   height = 0,
   nodes,
-  onZoom = (curr: any) => null,
+  onZoom = () => null,
   root
 }) => {
   const [state, setState] = useState({

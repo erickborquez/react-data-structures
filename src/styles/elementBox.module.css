@@ -22,24 +22,40 @@
   font-size: 12px;
 }
 
-.elementBoxIndexTop {
+.elementBoxIndex--top {
   top: 0;
   left: 50%;
   transform: translate(-50%, calc(-100% - 5px));
 }
-.elementBoxIndexLeft {
+.elementBoxIndex--right {
+  top: 50%;
+  left: 100%;
+  transform: translate(calc(50% + 5px), -50%);
+}
+.elementBoxIndex--bottom {
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 5px);
+}
+.elementBoxIndex--left {
   top: 50%;
   left: 0%;
   transform: translate(calc(-100% - 10px), -50%);
 }
 
-.elementBoxShowTop {
+.elementBoxShow--top {
   margin-top: 20px;
 }
-
-.elementBoxShowLeft {
+.elementBoxShow--right {
+  margin-right: 20px;
+}
+.elementBoxShow--bottom {
+  margin-bottom: 20px;
+}
+.elementBoxShow--left {
   margin-left: 20px;
 }
+
 .defaultSelection {
   background-color: rgb(63, 63, 63);
 }

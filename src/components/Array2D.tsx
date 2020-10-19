@@ -1,60 +1,79 @@
 import React, { useEffect, useState } from 'react'
 
+import { defaultArrayOptions } from '../common/defaultValues'
+import { formatAllSelections2D } from '../common/formatSelections'
+import formatElement from '../common/formatElement'
 import ElementBox from './ElementBox'
 
-import { defaultElementOptions } from '../common/defaultValues'
-import { getSelections2DFormated } from '../common/selections'
+import ArrayElement from '../types/Element'
+import Options from '../types/Options'
+import { Selection2D, FormatedArraySelection } from '../types/Selections'
 
 import { resizeArray } from '../common/utilities'
 
 import styles from '../styles/array2d.module.css'
 
-const Array2D = ({
+interface Props {
+  elements: ArrayElement[][]
+  className?: string
+  select?: Selection2D | Selection2D[]
+  options?: Options
+}
+const Array2D: React.FC<Props> = ({
   className = '',
-  select = null,
-  elements = null,
-  elementOptions = null
+  select,
+  elements,
+  options
 }) => {
   const [components, setComponents] = useState([[]])
 
   useEffect(() => {
     if (!elements) return
-    const selections = select ? getSelections2DFormated(select) : []
-    const options = { ...defaultElementOptions, ...(elementOptions || {}) }
+    let elementOptions = { ...defaultArrayOptions.element }
+    if (options && options.element)
+      elementOptions = {
+        ...elementOptions,
+        ...options.element
+      }
+    const selections = formatAllSelections2D(select)
+
     const maxElements = elements.reduce(
       (acc, array) => Math.max(acc, array.length),
       0
     )
-    const elementsFormated = elements.map((arr) =>
+    const elementsResized: ArrayElement[][] = elements.map((arr) =>
       resizeArray(arr, maxElements, '')
     )
-    const components = elementsFormated.map((arr, i) =>
-      arr.map((value, j) => {
-        let className = options.className || ''
-        let style = options.style || {}
-        selections.forEach((s) => {
-          if (s.callback(i, j, value)) {
-            className = `${className} ${s.className}`
-            style = { ...style, ...s.style }
-          }
+
+    const components = elementsResized.map((arr, i) =>
+      arr
+        .map((element) => formatElement(element, elementOptions))
+        .map((element, j) => {
+          let { className, style, value } = element
+          selections.forEach((selection) => {
+            if (selection.eval(element, [i, j], elementsResized)) {
+              className = `${className} ${selection.className}`
+              style = { ...style, ...selection.style }
+            }
+          })
+          const indexPosition = []
+          if (i === 0) indexPosition.push('top')
+          if (j === 0) indexPosition.push('left')
+          return (
+            <ElementBox
+              showIndex={true}
+              indexPosition={indexPosition}
+              index={{ top: j, left: i }}
+              key={j}
+              className={className}
+              style={style}
+              value={value}
+            />
+          )
         })
-        return (
-          <ElementBox
-            onClick={(event) => options.onClick(i, j, value, event)}
-            showIndexTop={i === 0}
-            indexTop={j}
-            showIndexLeft={j === 0}
-            indexLeft={i}
-            key={j}
-            className={className}
-            style={style}
-            data={value}
-          />
-        )
-      })
     )
     setComponents(components)
-  }, [elements, elementOptions, select])
+  }, [elements, options, select])
 
   return (
     <div

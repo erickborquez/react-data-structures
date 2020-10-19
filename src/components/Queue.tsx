@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import ElementBox from './ElementBox'
 
 import { getSelections1DFormated } from '../common/selections'
-import { defaultElementOptions } from '../common/defaultValues'
+import { defaultArrayOptions } from '../common/defaultValues'
 
 import styles from '../styles/queue.module.css'
 
@@ -19,7 +19,7 @@ const Queue = ({
 
   useEffect(() => {
     if (!elements) return
-    const options = { ...defaultElementOptions, ...(elementOptions || {}) }
+    const options = { ...defaultArrayOptions, ...(elementOptions || {}) }
     const selections = select !== null ? getSelections1DFormated(select) : []
 
     const components = []
@@ -37,13 +37,12 @@ const Queue = ({
       })
       return (
         <ElementBox
-          onClick={(event) => options.onClick(index, value, event)}
-          showIndexTop={indexTop || false}
-          indexTop={indexTop}
+          showIndex={indexTop || false}
+          index={indexTop}
           key={index}
           className={className}
           style={style}
-          data={value}
+          value={value}
         />
       )
     }

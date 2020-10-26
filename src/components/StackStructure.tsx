@@ -1,69 +1,93 @@
-import * as React from 'react'
+import React, { useState, useEffect, CSSProperties } from 'react'
 
+import clsx from 'clsx'
+import { defaultStackOptions } from '../common/defaultValues'
+import { formatAllSelectionsArray } from '../common/formatSelections'
+import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
 
-import { getSelections1DFormated } from '../common/selections'
-import { defaultArrayOptions } from '../common/defaultValues'
-
+import { ArrayElement } from '../types/Elements'
+import { StackOptions } from '../types/Options'
+import { Selection } from '../types/Selections'
 import styles from './../styles/stackStructure.module.css'
 
-const Stack = ({
-  className = '',
+interface Props {
+  elements: ArrayElement[]
+  className?: string
+  style?: CSSProperties
+  select?: Selection | Selection[]
+  options?: StackOptions
+}
+const Stack: React.FC<Props> = ({
   elements,
-  elementsToShow = 5,
-  showRear = false,
-  elementOptions,
-  select = null
+  style,
+  className,
+  select,
+  options
 }) => {
-  const [components, setComponents] = React.useState([])
+  const [components, setComponents] = useState([])
 
-  React.useEffect(() => {
-    if (!elements) return
-    const options = { ...defaultArrayOptions, ...(elementOptions || {}) }
-    const selections = select !== null ? getSelections1DFormated(select) : []
+  useEffect(() => {
+    const formatedOptions = options
+      ? { ...defaultStackOptions, ...options }
+      : { ...defaultStackOptions }
 
-    const components = []
-    const from = Math.max(0, elements.length - elementsToShow)
+    const elementOptions = {
+      ...defaultStackOptions.element,
+      ...formatedOptions.element
+    }
 
-    const createElement = (index, value, indexTop) => {
-      let className = options.className || ''
-      let style = options.style || {}
+    const selections = formatAllSelectionsArray(select)
+    const start =
+      elements.length -
+      Math.min(elements.length, formatedOptions.elementsToShow)
 
-      selections.forEach((s) => {
-        if (s.callback(index, value)) {
-          className = `${className} ${s.className}`
-          style = { ...style, ...s.style }
+    const components = elements
+      .map((element) => formatElement(element, elementOptions))
+      .map((element, index) => {
+        let { className, style, value } = element
+        selections.forEach((select) => {
+          if (select.eval(element, index, elements)) {
+            className = `${className} ${select.className}`
+            style = { ...style, ...select.style }
+          }
+        })
+
+        if (index >= start)
+          return (
+            <ElementBox
+              showIndex={
+                index === elements.length - 1 && formatedOptions.showTopIndex
+              }
+              index={formatedOptions.topIndexLabel}
+              key={index}
+              className={className}
+              style={style}
+              value={value}
+            />
+          )
+        else if (formatedOptions.showRear && index === 0) {
+          return [
+            <ElementBox
+              showIndex={formatedOptions.showRearIndex}
+              index={formatedOptions.rearIndexLabel}
+              key={index}
+              className={className}
+              style={style}
+              value={value}
+            />,
+            <div key={-1} className={styles.stackDot} />,
+            <div key={-2} className={styles.stackDot} />,
+            <div key={-3} className={styles.stackDot} />
+          ]
         }
       })
-      return (
-        <ElementBox
-          showIndex={indexTop || false}
-          index={indexTop}
-          key={index}
-          className={className}
-          style={style}
-          value={value}
-        />
-      )
-    }
-
-    if (showRear && from !== 0) {
-      components.push(createElement(0, elements[0], 'Rear'))
-      components.push(<div key={-1} className={`${styles.stackDot}`} />)
-      components.push(<div key={-2} className={`${styles.stackDot}`} />)
-      components.push(<div key={-3} className={`${styles.stackDot}`} />)
-    }
-    for (let index = from; index < elements.length - 1; index++)
-      components.push(createElement(index, elements[index], ' '))
-    components.push(
-      createElement(elements.length - 1, elements[elements.length - 1], 'Top')
-    )
 
     setComponents(components)
-  }, [elements, elementsToShow, elementOptions, select, showRear])
+  }, [elements, options, select])
 
   return (
-    <div className={`${styles.stackStructure} ${className}`}>{components}</div>
+    <div className={clsx(styles.stackStructure, className)}>{components}</div>
   )
 }
 

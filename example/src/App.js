@@ -11,26 +11,53 @@ import {
 
 import 'react-data-structures/dist/index.css'
 
-let count = 0
+const TREE = {
+  value: 12,
+  style: { color: 'red' },
+  id: 0,
+  children: [
+    {
+      value: 23,
+      id: 1,
+      left: { value: 22, id: 2 },
+      right: { value: 0, id: -1, left: { value: 0, id: -2 } }
+    },
+    {
+      value: 23,
+      id: 3,
+      left: { value: 22, id: 4 },
+      right: {
+        value: 22,
+        id: 4,
+        children: [
+          {
+            value: 12,
+            style: { color: 'red' },
+            id: 0,
+            children: [
+              { value: 23, id: 1, left: { value: 22, id: 2 } },
+              {
+                value: 23,
+                id: 3,
+                left: { value: 22, id: 4 },
+                right: { value: 22, id: 4 }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+const options = { width: 800, height: 600 }
 
 const App = () => {
-  const [tree, setTree] = useState({ root: { value: '0', children: [] } })
-  useEffect(() => {
-    if (count > 10) return
-    setTimeout(() => {
-      const treeCopy = JSON.parse(JSON.stringify(tree))
-      const parent = Object.keys(treeCopy)[
-        Math.floor(Math.random() * Object.keys(treeCopy).length)
-      ]
-      treeCopy[count] = { value: count, children: [] }
-      treeCopy[parent].children.push(count)
-      count++
-      setTree(treeCopy)
-    }, 1)
-  }, [tree])
-
   return (
     <main className='main'>
+      <div className='container'>
+        <Tree root={TREE} options={options} />
+      </div>
       {/* <div className='container'>
         <Tree
           nodes={tree}
@@ -41,38 +68,46 @@ const App = () => {
           reversed={false}
         />
       </div> */}
-      <div className='container'>
+      {/* <div className='container'>
         <Array1D
           elements={[1, 2, 3, 4, 4, 5, { value: 10, style: { color: 'blue' } }]}
+          select={{ eval: (el) => el.value === 10 }}
           options={{ element: { style: { color: 'red' } } }}
         />
-      </div>
-      <div className='container'>
+      </div> */}
+      {/* <div className='container'>
         <Array2D
           elements={[
             [1, 2],
             [3, 4]
           ]}
+          options={{ element: { style: { color: 'red' } } }}
         />
       </div>
-      {/*
       <div className='container'>
         <MapStructure
           elements={[
-            { key: '1', value: 2 },
-            { key: '1', value: 2 },
-            { key: '1', value: 2 },
-            { key: '1', value: 2 }
+            { keyValue: '1', value: 2, style: { color: 'red' } },
+            { keyValue: '1', value: 2 },
+            { keyValue: '1', value: 2 },
+            { keyValue: '1', value: 2 }
           ]}
+          options={{ element: { style: { color: 'green' } } }}
         />
       </div>
       <div className='container'>
-        <Queue elements={[1, 2, 3, 4, 5]} showBack elementsToShow={3} />
+        <Queue elements={[1, 2, 3, 4, 5]} options={{ elementsToShow: 2 }} />
       </div>
       <div className='container'>
-        <Stack elements={[1, 2, 3, 4, 5]} showRear elementsToShow={4} />
-      </div>{' '}
-      */}
+        <Stack
+          elements={[1, 2, 3, 4, { value: 5, style: { color: 'red' } }]}
+          options={{
+            elementsToShow: 2,
+            topIndexLabel: 'aaa',
+            rearIndexLabel: 'asdasdasd'
+          }}
+        />
+      </div> */}
     </main>
   )
 }

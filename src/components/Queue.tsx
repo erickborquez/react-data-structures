@@ -1,72 +1,90 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, CSSProperties } from 'react'
 
+import clsx from 'clsx'
+import { defaultQueueOtions } from '../common/defaultValues'
+import { formatAllSelectionsArray } from '../common/formatSelections'
+import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
 
-import { getSelections1DFormated } from '../common/selections'
-import { defaultArrayOptions } from '../common/defaultValues'
+import { ArrayElement } from '../types/Elements'
+import { QueueOptions } from '../types/Options'
+import { Selection } from '../types/Selections'
 
 import styles from '../styles/queue.module.css'
 
-const Queue = ({
-  className = '',
+interface Props {
+  elements: ArrayElement[]
+  className?: string
+  style?: CSSProperties
+  select?: Selection | Selection[]
+  options?: QueueOptions
+}
+const Queue: React.FC<Props> = ({
   elements,
-  elementsToShow = 5,
-  showBack = false,
-  elementOptions,
-  select = null
+  style,
+  className,
+  select,
+  options
 }) => {
   const [components, setComponents] = useState([])
 
   useEffect(() => {
-    if (!elements) return
-    const options = { ...defaultArrayOptions, ...(elementOptions || {}) }
-    const selections = select !== null ? getSelections1DFormated(select) : []
+    const formatedOptions = options
+      ? { ...defaultQueueOtions, ...options }
+      : { ...defaultQueueOtions }
 
-    const components = []
-    const to = Math.min(elements.length, elementsToShow)
+    const elementOptions = {
+      ...defaultQueueOtions.element,
+      ...formatedOptions.element
+    }
+    const selections = formatAllSelectionsArray(select)
+    const end = Math.min(elements.length, formatedOptions.elementsToShow)
 
-    const createElement = (index, value, indexTop) => {
-      let className = options.className || ''
-      let style = options.style || {}
+    const components = elements
+      .map((element) => formatElement(element, elementOptions))
+      .map((element, index) => {
+        let { className, style, value } = element
+        selections.forEach((select) => {
+          if (select.eval(element, index, elements)) {
+            className = `${className} ${select.className}`
+            style = { ...style, ...select.style }
+          }
+        })
 
-      selections.forEach((s) => {
-        if (s.callback(index, value)) {
-          className = `${className} ${s.className}`
-          style = { ...style, ...s.style }
+        if (index < end)
+          return (
+            <ElementBox
+              showIndex={index === 0 && formatedOptions.showFrontIndex}
+              index={formatedOptions.frontIndexLabel}
+              key={index}
+              className={className}
+              style={style}
+              value={value}
+            />
+          )
+        else if (formatedOptions.showBack && index === elements.length - 1) {
+          return [
+            <div key={-1} className={styles.queueDot} />,
+            <div key={-2} className={styles.queueDot} />,
+            <div key={-3} className={styles.queueDot} />,
+            <ElementBox
+              showIndex={formatedOptions.showBackIndex}
+              index={formatedOptions.backIndexLabel}
+              key={index}
+              className={className}
+              style={style}
+              value={value}
+            />
+          ]
         }
       })
-      return (
-        <ElementBox
-          showIndex={indexTop || false}
-          index={indexTop}
-          key={index}
-          className={className}
-          style={style}
-          value={value}
-        />
-      )
-    }
-
-    components.push(createElement(0, elements[0], 'Front'))
-    for (let index = 1; index < to; index++)
-      components.push(createElement(index, elements[index], ' '))
-    if (showBack && to !== elements.length) {
-      components.push(<div key={-1} className={`${styles.queueDot}`} />)
-      components.push(<div key={-2} className={`${styles.queueDot}`} />)
-      components.push(<div key={-3} className={`${styles.queueDot}`} />)
-      components.push(
-        createElement(
-          elements.length - 1,
-          elements[elements.length - 1],
-          'Back'
-        )
-      )
-    }
 
     setComponents(components)
-  }, [elements, elementsToShow, elementOptions, select, showBack])
+  }, [elements, options, select])
   return (
-    <div className={`${styles.queueStructure} ${className}`}>{components}</div>
+    <div style={style} className={clsx(styles.queueStructure, className)}>
+      {components}
+    </div>
   )
 }
 

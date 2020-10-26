@@ -1,6 +1,6 @@
 .queueStructure {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
 }
 
 .queueDot {
@@ -10,4 +10,5 @@
   background-color: white;
   margin: 0 7px;
   margin-top: 20px;
+  align-self: center;
 }

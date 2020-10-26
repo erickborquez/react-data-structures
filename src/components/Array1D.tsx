@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, CSSProperties } from 'react'
 import clsx from 'clsx'
 import { defaultArrayOptions } from '../common/defaultValues'
-import { formatAllSelections } from '../common/formatSelections'
-import formatElement from '../common/formatElement'
+import { formatAllSelectionsArray } from '../common/formatSelections'
+import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
 
-import ArrayElement from '../types/Element'
-import Options from '../types/Options'
-import Selection, { FormatedArraySelection } from '../types/Selections'
+import { ArrayElement } from '../types/Elements'
+import { Options } from '../types/Options'
+import { Selection } from '../types/Selections'
 
 import styles from '../styles/array1d.module.css'
 
 interface Props {
   elements: ArrayElement[]
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
   select?: Selection | Selection[]
   options?: Options
 }
@@ -28,13 +28,16 @@ const Array1D: React.FC<Props> = ({
   const [components, setComponents] = useState([])
 
   useEffect(() => {
-    let elementOptions = { ...defaultArrayOptions.element }
-    if (options && options.element)
-      elementOptions = {
-        ...elementOptions,
-        ...options.element
-      }
-    const selections = formatAllSelections(select)
+    const formatedOptions = options
+      ? { ...defaultArrayOptions, ...options }
+      : { ...defaultArrayOptions }
+
+    const elementOptions = {
+      ...defaultArrayOptions.element,
+      ...formatedOptions.element
+    }
+
+    const selections = formatAllSelectionsArray(select)
 
     const components = elements
       .map((element) => formatElement(element, elementOptions))

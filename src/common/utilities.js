@@ -1,7 +1,29 @@
 export const resizeArray = (array, size, defaultValue) => {
-  const newArray = [...array];
-  while (newArray.length < size) newArray.push(defaultValue);
-  return newArray;
+  const newArray = [...array]
+  while (newArray.length < size) newArray.push(defaultValue)
+  return newArray
 }
 
-export const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export function isObject(item) {
+  return item && typeof item === 'object' && !Array.isArray(item)
+}
+
+export function mergeDeep(target, ...sources) {
+  if (!sources.length) return target
+  const source = sources.shift()
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} })
+        mergeDeep(target[key], source[key])
+      } else {
+        Object.assign(target, { [key]: source[key] })
+      }
+    }
+  }
+
+  return mergeDeep(target, ...sources)
+}

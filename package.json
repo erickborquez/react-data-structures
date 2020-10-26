@@ -51,6 +51,7 @@
     "dist"
   ],
   "dependencies": {
+    "@types/d3": "^5.16.3",
     "@types/node": "^14.11.10",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",

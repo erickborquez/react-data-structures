@@ -1,12 +1,15 @@
 import { CSSProperties } from 'react'
-import ArrayElement, { FormatedElement } from '../types/Element'
-import Selection, {
+
+import {
+  Selection,
   FormatedArray2DSelection,
   FormatedArraySelection,
-  Selection2D
+  Selection2D,
+  SelectionKeyValueElement,
+  FormatedSelectionKeyValueElement
 } from '../types/Selections'
 
-import { defaultArraySelection } from './defaultValues'
+import { defaultSelection } from './defaultValues'
 
 export interface ElementSelected {
   value: number | string
@@ -15,51 +18,85 @@ export interface ElementSelected {
   id: number
 }
 
-function formatSelection(selection: Selection): FormatedArraySelection {
+export const formatSelectionArray = (
+  selection: Selection
+): FormatedArraySelection => {
   if (typeof selection === 'number')
-    return { ...defaultArraySelection, eval: (_, i) => i === selection }
+    return { ...defaultSelection, eval: (_, i) => i === selection }
   if ('index' in selection) {
-    return { ...selection, eval: (_, i) => i === selection.index }
+    return {
+      ...defaultSelection,
+      ...selection,
+      eval: (_, i) => i === selection.index
+    }
   }
   return selection
 }
-export default formatSelection
 
-export const formatAllSelections = (
+export const formatAllSelectionsArray = (
   selections: Selection | Selection[] | undefined
 ): FormatedArraySelection[] => {
   if (!selections) return []
-  if (Array.isArray(selections)) return selections.map(formatSelection)
-  return [formatSelection(selections)]
+  if (Array.isArray(selections)) return selections.map(formatSelectionArray)
+  return [formatSelectionArray(selections)]
 }
 
-export const formatSelection2D = (
+export const formatArraySelection2D = (
   selection: Selection2D
 ): FormatedArray2DSelection => {
   if (Array.isArray(selection)) {
     return {
-      ...defaultArraySelection,
+      ...defaultSelection,
       eval: (_, i) => i[0] === selection[0] && i[1] === selection[1]
     }
   }
   if ('index' in selection) {
     return {
-      ...defaultArraySelection,
+      ...defaultSelection,
+      className: selection.className,
+      style: selection.style,
       eval: (_, i) => i[0] === selection.index[0] && i[1] === selection.index[1]
     }
   }
   return selection
 }
 
-export const formatAllSelections2D = (
+export const formatAllSelectionsArray2D = (
   selections: Selection2D | Selection2D[] | undefined
 ): FormatedArray2DSelection[] => {
   if (!selections) return []
   if (Array.isArray(selections)) {
     if (isNaN(+selections[0])) {
-      return [formatSelection2D(selections as [number, number])]
+      return [formatArraySelection2D(selections as [number, number])]
     }
-    return (selections as Selection2D[]).map(formatSelection2D)
+    return (selections as Selection2D[]).map(formatArraySelection2D)
   }
-  return [formatSelection2D(selections)]
+  return [formatArraySelection2D(selections)]
+}
+
+export const formatSelectionKeyValue = (
+  selection: SelectionKeyValueElement
+): FormatedSelectionKeyValueElement => {
+  if (typeof selection === 'number' || typeof selection === 'string') {
+    return {
+      ...defaultSelection,
+      eval: (element) => element.keyValue === selection
+    }
+  } else if ('keyValue' in selection) {
+    return {
+      ...defaultSelection,
+      ...selection,
+      eval: (element) => element.keyValue === selection.keyValue
+    }
+  } else {
+    return selection
+  }
+}
+
+export const formatAllSelectionsKeyValue = (
+  selections: SelectionKeyValueElement | SelectionKeyValueElement[] | undefined
+): FormatedSelectionKeyValueElement[] => {
+  if (!selections) return []
+  if (Array.isArray(selections)) return selections.map(formatSelectionKeyValue)
+  return [formatSelectionKeyValue(selections)]
 }

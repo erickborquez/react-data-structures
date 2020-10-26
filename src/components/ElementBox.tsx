@@ -1,15 +1,16 @@
-import * as React from 'react'
+import React, { CSSProperties } from 'react'
 import clsx from 'clsx'
 
-import ArrayElement from '../types/Element'
 import { position, positionObj } from '../types/Shared'
+
+import { FormatedElement } from '../types/Elements'
 
 import styles from '../styles/elementBox.module.css'
 
 interface Props {
   value: number | string
-  className?: string
-  style?: React.CSSProperties
+  className: string
+  style: CSSProperties
   indexPosition?: position | position[] | string[]
   showIndex?: boolean
   index?: number | string | positionObj

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
+import clsx from 'clsx'
+
 import { defaultArrayOptions } from '../common/defaultValues'
-import { formatAllSelections2D } from '../common/formatSelections'
-import formatElement from '../common/formatElement'
+import { formatAllSelectionsArray2D } from '../common/formatSelections'
+import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
 
-import ArrayElement from '../types/Element'
-import Options from '../types/Options'
-import { Selection2D, FormatedArraySelection } from '../types/Selections'
+import { ArrayElement } from '../types/Elements'
+import { Options } from '../types/Options'
+import { Selection2D } from '../types/Selections'
 
 import { resizeArray } from '../common/utilities'
 
@@ -29,18 +31,22 @@ const Array2D: React.FC<Props> = ({
 
   useEffect(() => {
     if (!elements) return
-    let elementOptions = { ...defaultArrayOptions.element }
-    if (options && options.element)
-      elementOptions = {
-        ...elementOptions,
-        ...options.element
-      }
-    const selections = formatAllSelections2D(select)
+    const formatedOptions = options
+      ? { ...defaultArrayOptions, ...options }
+      : { ...defaultArrayOptions }
+
+    const elementOptions = {
+      ...defaultArrayOptions.element,
+      ...formatedOptions.element
+    }
+
+    const selections = formatAllSelectionsArray2D(select)
 
     const maxElements = elements.reduce(
       (acc, array) => Math.max(acc, array.length),
       0
     )
+
     const elementsResized: ArrayElement[][] = elements.map((arr) =>
       resizeArray(arr, maxElements, '')
     )
@@ -77,10 +83,10 @@ const Array2D: React.FC<Props> = ({
 
   return (
     <div
-      className={`${styles.array2dContainer} ${className}`}
+      className={clsx(styles.array2dContainer, className)}
       style={{
-        gridTemplateColumns: `repeat(${components[0].length},min-content)`,
-        gridTemplateRows: `repeat(${components.length},min-content)`
+        gridTemplateColumns: `repeat(${components[0].length}, min-content)`,
+        gridTemplateRows: `repeat(${components.length}, min-content)`
       }}
     >
       {components}

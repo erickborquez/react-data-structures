@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  CSSProperties,
-  Children
-} from 'react'
+import React, { useState, useRef, useEffect, CSSProperties } from 'react'
 
 import * as d3 from 'd3'
 
@@ -119,7 +113,6 @@ const Tree: React.FC<Props> = ({
     const resetScales = () => {
       xScale = d3.scaleLinear().range([padding, width - padding])
       yScale = d3.scaleLinear().range([height - padding, padding])
-
       if (orientation === 'vertical') {
         xScale.domain(reversed ? [0, 1] : [1, 0])
         yScale.domain(reversed ? [0, treeHeight] : [treeHeight, 0])
@@ -127,9 +120,6 @@ const Tree: React.FC<Props> = ({
         xScale.domain(reversed ? [treeHeight, 0] : [0, treeHeight])
         yScale.domain(reversed ? [1, 0] : [0, 1])
       }
-      // console.log(treeHeight)
-      // console.log(xScale(0), xScale(1))
-      // console.log(yScale(0), yScale(1))
     }
 
     const handleZoom = () => {
@@ -163,14 +153,11 @@ const Tree: React.FC<Props> = ({
       svgCircles
         .data(nodes)
         .attr('cx', ({ position }) => {
-          // console.log(xScale(position.x))
           return orientation === 'vertical'
             ? xScale(position.x)
             : xScale(position.y)
         })
         .attr('cy', ({ position }) => {
-          // console.log(position)
-          // console.log(yScale(position.y))
           return orientation === 'vertical'
             ? yScale(position.y)
             : yScale(position.x)

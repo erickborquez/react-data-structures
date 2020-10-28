@@ -8,18 +8,25 @@ import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
 
 import { ArrayElement } from '../types/Elements'
-import { Options } from '../types/Options'
+import { ArrayOptions } from '../types/Options'
 import { Selection2D } from '../types/Selections'
 
 import { resizeArray } from '../common/utilities'
 
-import styles from '../styles/array2d.module.css'
+import styled, { CSSProperties } from 'styled-components'
+
+const Container = styled.div`
+  display: grid;
+  grid-auto-columns: min-content;
+  grid-template-rows: auto;
+  justify-content: center;
+`
 
 interface Props {
   elements: ArrayElement[][]
   className?: string
   select?: Selection2D | Selection2D[]
-  options?: Options
+  options?: ArrayOptions
 }
 const Array2D: React.FC<Props> = ({
   className = '',
@@ -40,7 +47,12 @@ const Array2D: React.FC<Props> = ({
       ...formatedOptions.element
     }
 
-    const selections = formatAllSelectionsArray2D(select)
+    const defaultSelection = formatedOptions.selection.default as {
+      style: CSSProperties
+      className: string
+    }
+
+    const selections = formatAllSelectionsArray2D(select, defaultSelection)
 
     const maxElements = elements.reduce(
       (acc, array) => Math.max(acc, array.length),
@@ -56,8 +68,10 @@ const Array2D: React.FC<Props> = ({
         .map((element) => formatElement(element, elementOptions))
         .map((element, j) => {
           let { className, style, value } = element
+          let selected = false
           selections.forEach((selection) => {
             if (selection.eval(element, [i, j], elementsResized)) {
+              selected = true
               className = `${className} ${selection.className}`
               style = { ...style, ...selection.style }
             }
@@ -82,15 +96,15 @@ const Array2D: React.FC<Props> = ({
   }, [elements, options, select])
 
   return (
-    <div
-      className={clsx(styles.array2dContainer, className)}
+    <Container
+      className={className}
       style={{
         gridTemplateColumns: `repeat(${components[0].length}, min-content)`,
         gridTemplateRows: `repeat(${components.length}, min-content)`
       }}
     >
       {components}
-    </div>
+    </Container>
   )
 }
 

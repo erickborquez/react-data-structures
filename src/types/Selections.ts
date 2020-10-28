@@ -2,6 +2,8 @@ import { CSSProperties } from 'react'
 import { deflate } from 'zlib'
 import { ArrayElement, KeyValueElement } from './Elements'
 
+export type SelectionValue = { style: CSSProperties; className: string }
+
 export type Selection =
   | number
   | { index: number; className?: string; style: CSSProperties }
@@ -27,7 +29,6 @@ export interface FormatedArraySelection {
 }
 
 export type Selection2D =
-  | [number, number]
   | { index: [number, number]; className?: string; style: CSSProperties }
   | {
       eval: (

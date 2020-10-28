@@ -24,3 +24,19 @@ code {
   align-items: center;
   justify-content: center;
 }
+
+.elevate {
+  transition: all 0.2s;
+  color: white !important;
+  background-color: red;
+  animation: 0.3s linear 0s infinite alternate up;
+}
+
+@keyframes up {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-5px) scale(1.15);
+  }
+}

@@ -39,7 +39,13 @@ const MapStructure: React.FC<Props> = ({
       ...formatedOptions.element
     }
 
-    const selections = formatAllSelectionsKeyValue(select)
+    const defaultSelection = formatedOptions.selection.default as {
+      style: CSSProperties
+      className: string
+    }
+    const selections = formatAllSelectionsKeyValue(select, defaultSelection)
+
+    console.log(selections)
 
     const components = elements
       .map((element) => formatKeyValueElement(element, elementOptions))
@@ -47,6 +53,7 @@ const MapStructure: React.FC<Props> = ({
         let { value, keyValue, className, style } = element
 
         selections.forEach((select) => {
+          console.log(element)
           if (select.eval(element, i, elements)) {
             className = `${className} ${select.className}`
             style = { ...style, ...select.style }

@@ -37,7 +37,12 @@ const Stack: React.FC<Props> = ({
       ...formatedOptions.element
     }
 
-    const selections = formatAllSelectionsArray(select)
+    const defaultSelection = formatedOptions.selection.default as {
+      style: CSSProperties
+      className: string
+    }
+
+    const selections = formatAllSelectionsArray(select, defaultSelection)
     const start =
       elements.length -
       Math.min(elements.length, formatedOptions.elementsToShow)
@@ -46,8 +51,10 @@ const Stack: React.FC<Props> = ({
       .map((element) => formatElement(element, elementOptions))
       .map((element, index) => {
         let { className, style, value } = element
+        let selected = false
         selections.forEach((select) => {
           if (select.eval(element, index, elements)) {
+            selected = true
             className = `${className} ${select.className}`
             style = { ...style, ...select.style }
           }

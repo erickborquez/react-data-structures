@@ -1,9 +1,17 @@
 import { CSSProperties } from 'react'
 import { TreeDimensions } from '../../dist/types/Dimensions'
 import { ArrayElement } from './Elements'
+
 export interface Index {
   style?: CSSProperties
   className?: string
+}
+
+export interface SelectionOptions {
+  default?: {
+    className?: string
+    style?: CSSProperties
+  }
 }
 
 /// Single elements
@@ -30,14 +38,16 @@ export interface EdgeOption {
   className?: ''
 }
 
-export interface Options {
-  element?: ElementOptions
-}
 //// Structures
 
+export interface ArrayOptions {
+  element?: ElementOptions
+  selection?: SelectionOptions
+}
 export interface MapOptions {
   element?: ElementOptions
   keyElement?: KeyElementOptions
+  selection?: SelectionOptions
 }
 
 export interface QueueOptions {
@@ -48,6 +58,7 @@ export interface QueueOptions {
   showBack?: boolean
   showBackIndex?: boolean
   showFrontIndex?: boolean
+  selection?: SelectionOptions
 }
 
 export interface StackOptions {
@@ -58,6 +69,7 @@ export interface StackOptions {
   showRear?: boolean
   showRearIndex?: boolean
   showTopIndex?: boolean
+  selection?: SelectionOptions
 }
 
 export interface TreeOptions {
@@ -71,4 +83,5 @@ export interface TreeOptions {
   zoom?: boolean
   maxZoom?: number
   minZoom?: number
+  selection?: SelectionOptions
 }

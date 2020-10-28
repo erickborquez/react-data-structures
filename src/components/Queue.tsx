@@ -37,15 +37,22 @@ const Queue: React.FC<Props> = ({
       ...defaultQueueOtions.element,
       ...formatedOptions.element
     }
-    const selections = formatAllSelectionsArray(select)
+
+    const defaultSelection = formatedOptions.selection.default as {
+      style: CSSProperties
+      className: string
+    }
+    const selections = formatAllSelectionsArray(select, defaultSelection)
     const end = Math.min(elements.length, formatedOptions.elementsToShow)
 
     const components = elements
       .map((element) => formatElement(element, elementOptions))
       .map((element, index) => {
         let { className, style, value } = element
+        let selected = false
         selections.forEach((select) => {
           if (select.eval(element, index, elements)) {
+            selected = true
             className = `${className} ${select.className}`
             style = { ...style, ...select.style }
           }

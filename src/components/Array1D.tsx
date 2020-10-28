@@ -1,22 +1,25 @@
 import React, { useEffect, useState, CSSProperties } from 'react'
-import clsx from 'clsx'
+import styled from 'styled-components'
+
 import { defaultArrayOptions } from '../common/defaultValues'
 import { formatAllSelectionsArray } from '../common/formatSelections'
 import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
 
 import { ArrayElement } from '../types/Elements'
-import { Options } from '../types/Options'
+import { ArrayOptions } from '../types/Options'
 import { Selection } from '../types/Selections'
 
-import styles from '../styles/array1d.module.css'
+const Container = styled.div`
+  display: flex;
+`
 
 interface Props {
   elements: ArrayElement[]
   className?: string
   style?: CSSProperties
   select?: Selection | Selection[]
-  options?: Options
+  options?: ArrayOptions
 }
 const Array1D: React.FC<Props> = ({
   className = '',
@@ -37,14 +40,21 @@ const Array1D: React.FC<Props> = ({
       ...formatedOptions.element
     }
 
-    const selections = formatAllSelectionsArray(select)
+    const defaultSelection = formatedOptions.selection.default as {
+      style: CSSProperties
+      className: string
+    }
+
+    const selections = formatAllSelectionsArray(select, defaultSelection)
 
     const components = elements
       .map((element) => formatElement(element, elementOptions))
       .map((element, index) => {
         let { className, style, value } = element
+        let selected = false
         selections.forEach((select) => {
           if (select.eval(element, index, elements)) {
+            selected = true
             className = `${className} ${select.className}`
             style = { ...style, ...select.style }
           }
@@ -66,9 +76,9 @@ const Array1D: React.FC<Props> = ({
   }, [select, elements, options])
 
   return (
-    <div className={clsx(styles.array1dContainer, className)} style={style}>
+    <Container className={className} style={style}>
       {components}
-    </div>
+    </Container>
   )
 }
 

@@ -1,18 +1,18 @@
 import { FormatedElement } from '../types/Elements'
 import { FormatedKeyValueElement } from '../types/Elements'
 import {
-  Options,
+  ArrayOptions,
   MapOptions,
   QueueOptions,
   StackOptions,
   NodeOptions,
   EdgeOption,
-  TreeOptions
+  TreeOptions,
+  SelectionOptions
 } from '../types/Options'
 import { FormatedArraySelection } from '../types/Selections'
 
 import { FormatedTreeNode, Node, TreeNode } from '../types/Nodes'
-import { TreeDimensions } from '../types/Dimensions'
 
 export const defaultElement: FormatedElement = {
   style: {},
@@ -33,16 +33,28 @@ export const defaultKeyValueElement: FormatedKeyValueElement = {
   keyValue: ''
 }
 
-export const defaultArrayOptions: Options = {
+//// Options
+
+export const defaultSelectionOptions: SelectionOptions = {
+  default: {
+    style: { color: '#222', backgroundColor: '#ccc' },
+    className: ''
+  }
+}
+
+export const defaultArrayOptions: ArrayOptions = {
+  selection: JSON.parse(JSON.stringify(defaultSelectionOptions)),
   element: { className: '', style: {} }
 }
 
 export const defaultMapOptions: MapOptions = {
+  selection: JSON.parse(JSON.stringify(defaultSelectionOptions)),
   element: { className: '', style: {} },
   keyElement: { className: '', style: {} }
 }
 
 export const defaultQueueOtions: QueueOptions = {
+  selection: JSON.parse(JSON.stringify(defaultSelectionOptions)),
   element: { className: '', style: {} },
   elementsToShow: 5,
   frontIndexLabel: 'Front',
@@ -53,6 +65,7 @@ export const defaultQueueOtions: QueueOptions = {
 }
 
 export const defaultStackOptions: StackOptions = {
+  selection: JSON.parse(JSON.stringify(defaultSelectionOptions)),
   element: { className: '', style: {} },
   elementsToShow: 5,
   topIndexLabel: 'Top',
@@ -75,6 +88,7 @@ export const defaultEdgeOptions: EdgeOption = {
 }
 
 export const defaultTreeOptions: TreeOptions = {
+  selection: JSON.parse(JSON.stringify(defaultSelectionOptions)),
   height: 800,
   width: 600,
   edge: { ...defaultNodeOptions },

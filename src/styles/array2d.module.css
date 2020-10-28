@@ -1,6 +1,0 @@
-.array2dContainer {
-  display: grid;
-  grid-auto-columns: min-content;
-  grid-template-rows: auto;
-  justify-content: center;
-}

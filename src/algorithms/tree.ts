@@ -13,7 +13,6 @@ export const getTreeLayout = (
   const formatedRoot = _getHeightAndWidth(root, 0)
   const treeLayout = _getTreeLayout(formatedRoot, 0, 1, formatedRoot.width)
   const { edges, height } = getEdgesAndHeight(treeLayout)
-  console.log(height)
   return { treeLayout, edges, height, width: treeLayout.width }
 }
 

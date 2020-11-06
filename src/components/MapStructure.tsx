@@ -2,7 +2,6 @@ import React, { CSSProperties } from 'react'
 
 import KeyValueElementBox from './KeyValueElementBox'
 
-import { getSelectionsKeyValue } from '../common/selections'
 import { defaultMapOptions } from '../common/defaultValues'
 
 import { KeyValueElement } from '../types/Elements'
@@ -45,15 +44,12 @@ const MapStructure: React.FC<Props> = ({
     }
     const selections = formatAllSelectionsKeyValue(select, defaultSelection)
 
-    console.log(selections)
-
     const components = elements
       .map((element) => formatKeyValueElement(element, elementOptions))
       .map((element, i) => {
         let { value, keyValue, className, style } = element
 
         selections.forEach((select) => {
-          console.log(element)
           if (select.eval(element, i, elements)) {
             className = `${className} ${select.className}`
             style = { ...style, ...select.style }
@@ -73,9 +69,7 @@ const MapStructure: React.FC<Props> = ({
     setComponents(components)
   }, [elements, options, select])
 
-  return (
-    <div className={`${styles.mapStructure} ${className}`}>{components}</div>
-  )
+  return <div className={className}>{components}</div>
 }
 
 export default MapStructure

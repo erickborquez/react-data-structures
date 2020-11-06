@@ -49,17 +49,11 @@ export const formatArraySelection2D = (
   selection: Selection2D,
   defaultSelection: SelectionValue
 ): FormatedArray2DSelection => {
-  if (Array.isArray(selection)) {
-    return {
-      ...defaultSelection,
-      eval: (_, i) => i[0] === selection[0] && i[1] === selection[1]
-    }
-  }
   if ('index' in selection) {
     return {
       ...defaultSelection,
-      className: selection.className,
-      style: selection.style,
+      className: selection.className || defaultSelection.className,
+      style: selection.style || defaultSelection.style,
       eval: (_, i) => i[0] === selection.index[0] && i[1] === selection.index[1]
     }
   }
@@ -71,6 +65,7 @@ export const formatAllSelectionsArray2D = (
   defaultSelection: SelectionValue
 ): FormatedArray2DSelection[] => {
   if (!selections) return []
+  console.log(selections)
   if (Array.isArray(selections)) {
     return selections.map((s) => formatArraySelection2D(s, defaultSelection))
   }

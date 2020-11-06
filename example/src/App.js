@@ -53,20 +53,13 @@ const TREE = {
 const options = { width: 800, height: 600 }
 
 const App = () => {
-  const [select, setSelect] = useState(0)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setSelect((select + 1) % 6)
-    }, 2000)
-  }, [select])
   return (
     <main className='main'>
-      {/* <div className='container'>
-        <Tree root={TREE} options={options} />
-      </div> */}
       <div className='container'>
-        <Array1D elements={[1, 2, 3, 4, 4, 5]} select={0} />
+        <Tree root={TREE} options={options} />
+      </div>
+      <div className='container'>
+        <Array1D elements={[1, 2, 3, 4, 4, 5]} select={{ index: 1 }} />
       </div>
       <div className='container'>
         <Array2D
@@ -74,7 +67,7 @@ const App = () => {
             [1, 2],
             [3, 4]
           ]}
-          select={{ index: [1, 1] }}
+          select={{ index: [1, 1], style: {} }}
         />
       </div>
       <div className='container'>
@@ -88,8 +81,6 @@ const App = () => {
           select={1}
         />
       </div>
-      {/*
-
       <div className='container'>
         <Queue elements={[1, 2, 3, 4, 5]} />
       </div>
@@ -102,8 +93,7 @@ const App = () => {
             rearIndexLabel: 'asdasdasd'
           }}
         />
-      </div>{' '}
-      */}
+      </div>
     </main>
   )
 }

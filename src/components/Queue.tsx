@@ -5,12 +5,18 @@ import { defaultQueueOtions } from '../common/defaultValues'
 import { formatAllSelectionsArray } from '../common/formatSelections'
 import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
+import Dot from './Dot'
 
 import { ArrayElement } from '../types/Elements'
 import { QueueOptions } from '../types/Options'
 import { Selection } from '../types/Selections'
 
-import styles from '../styles/queue.module.css'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 interface Props {
   elements: ArrayElement[]
@@ -71,9 +77,9 @@ const Queue: React.FC<Props> = ({
           )
         else if (formatedOptions.showBack && index === elements.length - 1) {
           return [
-            <div key={-1} className={styles.queueDot} />,
-            <div key={-2} className={styles.queueDot} />,
-            <div key={-3} className={styles.queueDot} />,
+            <Dot key={-1} />,
+            <Dot key={-2} />,
+            <Dot key={-3} />,
             <ElementBox
               showIndex={formatedOptions.showBackIndex}
               index={formatedOptions.backIndexLabel}
@@ -89,9 +95,9 @@ const Queue: React.FC<Props> = ({
     setComponents(components)
   }, [elements, options, select])
   return (
-    <div style={style} className={clsx(styles.queueStructure, className)}>
+    <Container style={style} className={className}>
       {components}
-    </div>
+    </Container>
   )
 }
 

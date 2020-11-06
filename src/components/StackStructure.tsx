@@ -5,11 +5,18 @@ import { defaultStackOptions } from '../common/defaultValues'
 import { formatAllSelectionsArray } from '../common/formatSelections'
 import { formatElement } from '../common/formatElement'
 import ElementBox from './ElementBox'
+import Dot from './Dot'
 
 import { ArrayElement } from '../types/Elements'
 import { StackOptions } from '../types/Options'
 import { Selection } from '../types/Selections'
-import styles from './../styles/stackStructure.module.css'
+
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 interface Props {
   elements: ArrayElement[]
@@ -83,9 +90,9 @@ const Stack: React.FC<Props> = ({
               style={style}
               value={value}
             />,
-            <div key={-1} className={styles.stackDot} />,
-            <div key={-2} className={styles.stackDot} />,
-            <div key={-3} className={styles.stackDot} />
+            <Dot key={-1} />,
+            <Dot key={-2} />,
+            <Dot key={-3} />
           ]
         }
       })
@@ -93,9 +100,7 @@ const Stack: React.FC<Props> = ({
     setComponents(components)
   }, [elements, options, select])
 
-  return (
-    <div className={clsx(styles.stackStructure, className)}>{components}</div>
-  )
+  return <Container className={className}>{components}</Container>
 }
 
 export default Stack

@@ -7,8 +7,3 @@
   font-size: 2em;
   text-align: center;
 }
-
-body {
-  --selected-color: red;
-  --selected-background: blue;
-}

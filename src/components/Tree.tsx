@@ -104,8 +104,6 @@ const Tree: React.FC<Props> = ({
     const svgCircles = svgContainer.selectAll('circle')
     const svgPaths = svgContainer.selectAll('path')
 
-    console.log(width, height, padding)
-
     let edgesArr = []
 
     let xScale

@@ -32,10 +32,8 @@ const StyledValue = styled.span<{ selected?: boolean }>`
 
 const StyledKey = styled.span<{ selected?: boolean }>`
   border-top: 1.8px solid var(--element-color);
-  color: #f5d67b;
   font-size: 0.7em;
   padding: 3px 10px;
-  background-color: red;
 `
 
 interface Props extends KeyValueElement {
